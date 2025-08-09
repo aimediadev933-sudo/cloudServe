@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoTcloudServe@TEIN - Smart Communities Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #9A2AA0;
+            --secondary: #DA3FA3;
+            --body: #FCF5EC;
+            --text: #1D1D1B;
+            --secondary-dark: #4E245C;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--body);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(154, 42, 160, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--body);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-button {
+            background: white;
+            color: var(--primary);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        /* Overview */
+        .overview {
+            background: white;
+        }
+
+        .overview-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .overview-text {
+            font-size: 1.1rem;
+        }
+
+        .overview-visual {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        /* Key Features */
+        .features {
+            background: var(--body);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(154, 42, 160, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Activities */
+        .activities {
+            background: white;
+        }
+
+        .activities-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .activities-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+
+        .activity-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--secondary);
+        }
+
+        .activity-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        /* Partners */
+        .partners {
+            background: var(--body);
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .partner-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(154, 42, 160, 0.1);
+        }
+
+        .partner-country {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Stats */
+        .stats {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* SDGs */
+        .sdgs {
+            background: white;
+            text-align: center;
+        }
+
+        .sdg-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .sdg-badge {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .overview-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .activities-timeline {
+                padding-left: 1rem;
+            }
+
+            .activity-item {
+                padding-left: 1.5rem;
+            }
+
+            .sdg-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .hero {
+                padding: 100px 0 60px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .features-grid,
+            .partners-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">IoTcloudServe@TEIN</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#activities">Activities</a></li>
+                <li><a href="#partners">Partners</a></li>
+                <li><a href="#outcomes">Outcomes</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Data-Centric IoT-Cloud Service Platform for Smart Communities</h1>
+            <p>Empowering TEIN communities through innovative IoT solutions and collaborative research</p>
+            <a href="#overview" class="cta-button">Explore Platform</a>
+        </div>
+    </section>
+
+    <section id="overview" class="overview">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <div class="overview-content">
+                <div class="overview-text">
+                    <p>The IoTcloudServe@TEIN project represents a groundbreaking initiative to design, develop, and operate a centralized IoT-cloud service platform in Thailand, accessible to TEIN communities worldwide.</p>
+                    <br>
+                    <p>This innovative platform demonstrates its utility through three data-centric IoT-cloud services across two strategic TEIN sites: Smart-Energy/Mobility@Chula in Thailand and Smart-Agriculture@NUOL in Laos.</p>
+                    <br>
+                    <p>The project integrates collaborative efforts from developed, developing, and least developed countries to foster IoT-domain service diversification through shared resources, data, and learned lessons.</p>
+                </div>
+                <div class="overview-visual">
+                    <h3>🌐 Global Collaboration</h3>
+                    <p><strong>5 Countries</strong><br>Thailand, Laos, Malaysia, Japan, Korea</p>
+                    <br>
+                    <p><strong>7 Institutions</strong><br>Leading universities and research centers</p>
+                    <br>
+                    <p><strong>3 Smart Services</strong><br>Energy, Mobility & Agriculture</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Key Platform Capabilities</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>Centralized IoT Storage</h3>
+                    <p>Secure, scalable storage solutions for IoT data across multiple communities and applications</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Analytics Compute Pool</h3>
+                    <p>Powerful distributed computing resources for real-time data analysis and insights</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>IoT Access Gateway</h3>
+                    <p>Seamless integration and communication between diverse IoT devices and services</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="activities" class="activities">
+        <div class="container">
+            <h2 class="section-title">Project Activities</h2>
+            <div class="activities-timeline">
+                <div class="activity-item">
+                    <div class="activity-title">🤝 Collaborative Learning</div>
+                    <p>Three collaboration meetings held at APAN46 (New Zealand), APAN47 (Korea), and virtual sessions. Two IoTcloudServe@TEIN workshops conducted in Laos with comprehensive training programs.</p>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-title">🏗️ Infrastructure Development</div>
+                    <p>Complete hardware procurement and installation of main server towers (Data Lake) at ThaiREN in Bangkok, Thailand, serving as central computing and storage resources.</p>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-title">💻 Platform Engineering</div>
+                    <p>Comprehensive service platform design and development, hosted within the Data Lake, leveraging NETPIE and KAFKA frameworks for optimal performance.</p>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-title">🚀 Live Demonstrations</div>
+                    <p>Implementation of Smart-Energy/Mobility@Chula (Thailand) and Smart-Agriculture@NUOL (Laos) demonstration sites showcasing real-world applications.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="partners" class="partners">
+        <div class="container">
+            <h2 class="section-title">Partner Organizations</h2>
+            <div class="partners-grid">
+                <div class="partner-card">
+                    <div class="partner-country">🇹🇭 THAILAND</div>
+                    <h4>Chulalongkorn University</h4>
+                    <p>Co-PI, Contract Coordinator</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-country">🇰🇷 KOREA</div>
+                    <h4>Gwangju Institute of Science and Technology</h4>
+                    <p>Co-PI</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-country">🇱🇦 LAOS</div>
+                    <h4>National University of Laos</h4>
+                    <p>Partner Institution</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-country">🇹🇭 THAILAND</div>
+                    <h4>National Electronics and Computer Technology</h4>
+                    <p>NECTEC</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-country">🇲🇾 MALAYSIA</div>
+                    <h4>University of Malaya</h4>
+                    <p>Partner Institution</p>
+                </div>
+                <div class="partner-card">
+                    <div class="partner-country">🇯🇵 JAPAN</div>
+                    <h4>University of Tokyo</h4>
+                    <p>Partner Institution</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="outcomes" class="stats">
+        <div class="container">
+            <h2 class="section-title">Key Achievements</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>1</h3>
+                    <p>Centralized Platform<br>Successfully Deployed</p>
+                </div>
+                <div class="stat-item">
+                    <h3>3</h3>
+                    <p>Smart Service<br>Demonstrations</p>
+                </div>
+                <div class="stat-item">
+                    <h3>2</h3>
+                    <p>Workshop Training<br>Programs Conducted</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1</h3>
+                    <p>Best Poster<br>Award Won</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="sdgs">
+        <div class="container">
+            <h2 class="section-title">Supporting UN Sustainable Development Goals</h2>
+            <div class="sdg-badges">
+                <div class="sdg-badge">SDG 9: Industry, Innovation and Infrastructure</div>
+                <div class="sdg-badge">SDG 11: Sustainable Cities and Communities</div>
+                <div class="sdg-badge">SDG 13: Climate Action</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Project Information</h4>
+                    <p>WP4 - 2nd Call</p>
+                    <p>IoTcloudServe@TEIN Platform</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Lead Institution</h4>
+                    <p>Chulalongkorn University</p>
+                    <p>Bangkok, Thailand</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <a href="#">GitHub Repository</a>
+                    <a href="#">Technical Documentation</a>
+                    <a href="#">Research Publications</a>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 2rem;">
+                <p>&copy; 2024 IoTcloudServe@TEIN Project. Supporting smart communities through innovative IoT solutions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                // Close mobile menu if open
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(154, 42, 160, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+                header.style.backdropFilter = 'none';
+            }
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and timeline items
+        document.querySelectorAll('.feature-card, .partner-card, .activity-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
